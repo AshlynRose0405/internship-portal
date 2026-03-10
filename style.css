@@ -1,0 +1,187 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: url("https://images.unsplash.com/photo-1522071820081-009f0129c71c") no-repeat center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: #666666a1;
+    z-index: 0;
+}
+
+.logo {
+    position: fixed;
+    top: 22px;
+    left: 28px;
+    z-index: 100;
+}
+
+.logo img {
+    height: 85px;
+    width: auto;
+}
+
+/* ── Card ── */
+.card {
+    position: relative;
+    z-index: 1;
+    background: #ffffffe8;
+    width: clamp(460px, 52%, 680px);
+    padding: 30px 55px;
+    border-radius: 18px;
+    box-shadow:
+        rgba(0,0,0,.25) 0 54px 55px,
+        rgba(0,0,0,.12) 0 -12px 30px ,
+        rgba(0,0,0,.12) 0 4px 6px,
+        rgba(0,0,0,.17) 0 12px 13px,
+        rgba(0,0,0,.09) 0 -3px 5px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 32px;
+    background: linear-gradient(to bottom right, rgba(22,22,192,.909), rgb(63,179,225));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+label {
+    display: block;
+    margin-top: 22px;
+    font-weight: 700;
+    font-size: 22px;
+    color: #333;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 18px 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 22px;
+    font-family: 'Segoe UI', sans-serif;
+    transition: border-color .2s;
+    background: #fff;
+    color: #333;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #449ce4;
+}
+
+/* ── Button ── */
+button {
+    width: 100%;
+    margin-top: 30px;
+    padding: 18px;
+    background: #449ce4;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    transition: background .3s;
+    letter-spacing: .5px;
+}
+
+button:hover:not(:disabled) {
+    background: linear-gradient(to bottom right, rgba(22,22,192,.909), rgb(63,179,225));
+}
+
+button:disabled { opacity: .65; cursor: not-allowed; }
+
+/* ── Spinner ── */
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(255,255,255,.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    flex-shrink: 0;
+}
+
+.hidden { display: none !important; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Messages ── */
+.msg {
+    margin-top: 16px;
+    font-size: 20px;
+    font-weight: 500;
+    min-height: 26px;
+}
+.msg.error   { color: #d32f2f; }
+.msg.success { color: #2e7d32; }
+.msg.warn    { color: #e65100; }
+
+/* ── Links ── */
+.links {
+    margin-top: 22px;
+    font-size: 20px;
+}
+
+.links a {
+    color: #6c7cff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color .3s;
+}
+
+.links a:hover { color: rgba(23,23,182,.8); }
+
+/* ── Password box ── */
+.password-box { position: relative; }
+.password-box input { padding-right: 58px; }
+
+.eye-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    font-size: 24px;
+    transition: color .2s;
+}
+
+.eye-icon:hover { color: #000; }
+
+/* ── Responsive ── */
+@media (max-width: 740px) {
+    .card { width: 93vw; padding: 34px 26px; }
+    h1 { font-size: 30px; }
+    label { font-size: 18px; }
+    input, select { font-size: 18px; padding: 15px 16px; }
+    button { font-size: 20px; }
+    .msg { font-size: 16px; }
+    .links { font-size: 16px; }
+}
+
+@media (max-width: 400px) {
+    .logo img { height: 55px; }
+    .card { padding: 28px 16px; }
+    h1 { font-size: 26px; }
+}

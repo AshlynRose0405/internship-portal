@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login – Internship Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div class="logo">
+        <img src="images/logo.png" alt="logo">
+    </div>
+    <div class="overlay"></div>
+    <div class="card">
+        <h1>Portal Login</h1>
+
+        <label for="userId">User ID</label>
+        <input id="userId" type="text" placeholder="Enter user ID" autocomplete="username">
+
+        <label for="password">Password</label>
+        <div class="password-box">
+            <input type="password" id="password" placeholder="Enter password" autocomplete="current-password">
+            <i class="fa-solid fa-eye eye-icon" id="eyeIcon" onclick="togglePassword()"></i>
+        </div>
+
+        <button type="button" id="loginBtn" onclick="login()">
+            <span id="loginBtnText">LOGIN</span>
+            <span id="loginSpinner" class="spinner hidden"></span>
+        </button>
+        <p id="loginMsg" class="msg" role="alert"></p>
+
+        <div class="links">
+            <a href="forgot.html">Forgot UserID / Password?</a> |
+            <a href="register.html">Register Now</a>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

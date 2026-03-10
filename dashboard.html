@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Dashboard - Internship Portal</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <img src="images/logo.png" alt="Logo" class="logo">
+        <div class="header-right">
+            <span class="header-userid" id="headerUserId"></span>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <div class="page-title">
+        <h1>Internship Application Form</h1>
+        <p>Fill in all the details carefully before submitting.</p>
+    </div>
+
+    <div class="container">
+        <form id="dashboardForm" novalidate>
+
+            <!-- SECTION 1: PERSONAL DETAILS -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-user card-icon"></i>
+                    <h2>Personal Details</h2>
+                </div>
+                <div class="grid-2">
+                    <div class="field">
+                        <label for="userId"><i class="fa-solid fa-id-badge field-icon"></i> User ID</label>
+                        <input type="text" id="userId" readonly class="readonly-field">
+                    </div>
+                    <div class="field">
+                        <label for="email"><i class="fa-solid fa-envelope field-icon"></i> Email</label>
+                        <input type="email" id="email" readonly class="readonly-field">
+                    </div>
+
+                    <div class="field">
+                        <label><i class="fa-solid fa-venus-mars field-icon"></i> Gender</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="gender" value="Male"> Male</label>
+                            <label class="radio-label"><input type="radio" name="gender" value="Female"> Female</label>
+                            <label class="radio-label"><input type="radio" name="gender" value="Other"> Other</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="phone"><i class="fa-solid fa-phone field-icon"></i> Phone Number</label>
+                        <div class="phone-wrapper">
+                            <span class="phone-prefix">+91</span>
+                            <input type="tel" id="phone" placeholder="Enter 10-digit mobile number" maxlength="10"
+                                inputmode="numeric" pattern="[0-9]{10}"
+                                oninput="onlyDigits(this);updatePhoneCounter(this);" onpaste="handlePhonePaste(event);">
+                            <span class="phone-counter" id="phoneCounter">0 / 10</span>
+                        </div>
+                        <span class="phone-hint" id="phoneHint"></span>
+                    </div>
+
+                    <div class="field">
+                        <label for="title"><i class="fa-solid fa-signature field-icon"></i> Title</label>
+                        <select id="title">
+                            <option value="">-- Select --</option>
+                            <option>Mr</option>
+                            <option>Ms</option>
+                            <option>Mrs</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="name"><i class="fa-solid fa-user field-icon"></i> Full Name</label>
+                        <input type="text" id="name" readonly class="readonly-field">
+                    </div>
+
+                    <div class="field">
+                        <label for="dob"><i class="fa-solid fa-cake-candles field-icon"></i> Date of Birth</label>
+                        <input type="text" id="dob" readonly class="readonly-field">
+                    </div>
+                    <div class="field">
+                        <label for="age"><i class="fa-solid fa-hourglass-half field-icon"></i> Age</label>
+                        <input type="text" id="age" readonly class="readonly-field">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: ADDRESS -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-location-dot card-icon"></i>
+                    <h2>Address</h2>
+                </div>
+                <div class="field">
+                    <label for="address"><i class="fa-solid fa-house field-icon"></i> Street Address</label>
+                    <input type="text" id="address" placeholder="Door no., Street, Area, Landmark">
+                </div>
+                <div class="grid-2" style="margin-top: 22px;">
+                    <div class="field">
+                        <label for="city"><i class="fa-solid fa-city field-icon"></i> City</label>
+                        <input type="text" id="city" placeholder="City">
+                    </div>
+                    <div class="field">
+                        <label for="state"><i class="fa-solid fa-map field-icon"></i> State</label>
+                        <input type="text" id="state" placeholder="State">
+                    </div>
+                    <div class="field">
+                        <label for="country"><i class="fa-solid fa-globe field-icon"></i> Country</label>
+                        <input type="text" id="country" placeholder="Country">
+                    </div>
+                    <div class="field">
+                        <label for="pinCode"><i class="fa-solid fa-location-pin field-icon"></i> Pin Code</label>
+                        <input type="text" id="pinCode" placeholder="6-digit pin code" maxlength="6">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: ACADEMIC -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-graduation-cap card-icon"></i>
+                    <h2>Academic Information</h2>
+                </div>
+                <div class="grid-2">
+                    <div class="field">
+                        <label for="degree"><i class="fa-solid fa-scroll field-icon"></i> Degree</label>
+                        <input type="text" id="degree" placeholder="e.g. B.E / B.Tech / BCA">
+                    </div>
+                    <div class="field">
+                        <label for="department"><i class="fa-solid fa-book field-icon"></i> Department</label>
+                        <input type="text" id="department" placeholder="e.g. Computer Science">
+                    </div>
+                    <div class="field">
+                        <label for="year"><i class="fa-solid fa-calendar field-icon"></i> Current Year</label>
+                        <select id="year">
+                            <option value="">-- Select Year --</option>
+                            <option>1st Year</option>
+                            <option>2nd Year</option>
+                            <option>3rd Year</option>
+                            <option>4th Year</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="collegeLocation"><i class="fa-solid fa-map-pin field-icon"></i> College
+                            Location</label>
+                        <input type="text" id="collegeLocation" placeholder="City, State">
+                    </div>
+                    <div class="field span-2">
+                        <label for="collegeName"><i class="fa-solid fa-building-columns field-icon"></i> College
+                            Name</label>
+                        <input type="text" id="collegeName" placeholder="Full name of your college / university">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: ADDITIONAL INFO -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-circle-info card-icon"></i>
+                    <h2>Additional Information</h2>
+                </div>
+
+                <!-- Course + Duration multi-entry picker -->
+                <div class="course-picker">
+                    <div class="picker-heading">
+                        <i class="fa-solid fa-laptop-code" style="color:#449ce4;"></i>
+                        <span>Courses &amp; Durations</span>
+                        <span class="picker-sub">Each course can be added once with its own duration</span>
+                    </div>
+
+                    <div class="course-row-inputs">
+                        <div class="field">
+                            <label for="courseSelect">Course</label>
+                            <select id="courseSelect">
+                                <option value="">-- Select Course --</option>
+                                <option value="Full Stack Developer">Full Stack Developer</option>
+                                <option value="Networking">Networking</option>
+                                <option value="Cybersecurity">Cybersecurity</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="durationSelect">Duration</label>
+                            <select id="durationSelect">
+                                <option value="">-- Select Duration --</option>
+                                <option value="15 Days">15 Days</option>
+                                <option value="1 Month">1 Month</option>
+                                <option value="2 Months">2 Months</option>
+                                <option value="3 Months">3 Months</option>
+                                <option value="4 Months">4 Months</option>
+                                <option value="5 Months">5 Months</option>
+                                <option value="6 Months">6 Months</option>
+                            </select>
+                        </div>
+                        <button type="button" class="add-course-btn" onclick="addCourseEntry()">
+                            <i class="fa-solid fa-plus"></i> Add
+                        </button>
+                    </div>
+
+                    <p class="course-hint" id="courseHint"></p>
+
+                    <div class="course-list" id="courseList">
+                        <p class="course-list-empty">
+                            <i class="fa-solid fa-circle-info"></i>&nbsp;
+                            No courses added yet. Select a course and duration, then click Add.
+                        </p>
+                    </div>
+
+                    <!-- Hidden field — stores JSON array sent to backend -->
+                    <input type="hidden" id="courseDurationData">
+                </div>
+
+                <div class="grid-2" style="margin-top: 28px;">
+                    <div class="field">
+                        <label for="referralSource"><i class="fa-solid fa-bullhorn field-icon"></i> How did you hear
+                            about us?</label>
+                        <select id="referralSource">
+                            <option value="">-- Select --</option>
+                            <option>College</option>
+                            <option>Friend</option>
+                            <option>Social Media</option>
+                            <option>Website</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: DOCUMENTS -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-file-arrow-up card-icon"></i>
+                    <h2>Document Upload</h2>
+                </div>
+                <p class="upload-note">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Accepted formats: PDF, JPG, PNG &nbsp;|&nbsp; Max size: 5 MB per file
+                </p>
+                <div class="upload-row">
+                    <div class="upload-label">
+                        <i class="fa-solid fa-file-pdf upload-type-icon"></i>
+                        <span>Resume</span>
+                    </div>
+                    <div class="upload-control">
+                        <label class="file-btn" for="resume"><i class="fa-solid fa-upload"></i> Choose File</label>
+                        <input type="file" id="resume" name="resume" accept=".pdf,.jpg,.jpeg,.png">
+                        <span class="file-name" id="resumeName">No file chosen</span>
+                    </div>
+                </div>
+                <div class="upload-row">
+                    <div class="upload-label">
+                        <i class="fa-solid fa-id-card upload-type-icon"></i>
+                        <span>Aadhar Card</span>
+                    </div>
+                    <div class="upload-control">
+                        <label class="file-btn" for="aadhar"><i class="fa-solid fa-upload"></i> Choose File</label>
+                        <input type="file" id="aadhar" name="aadhar" accept=".pdf,.jpg,.jpeg,.png">
+                        <span class="file-name" id="aadharName">No file chosen</span>
+                    </div>
+                </div>
+                <div class="upload-row">
+                    <div class="upload-label">
+                        <i class="fa-solid fa-file-lines upload-type-icon"></i>
+                        <span>Marksheet</span>
+                    </div>
+                    <div class="upload-control">
+                        <label class="file-btn" for="marksheet"><i class="fa-solid fa-upload"></i> Choose File</label>
+                        <input type="file" id="marksheet" name="marksheet" accept=".pdf,.jpg,.jpeg,.png">
+                        <span class="file-name" id="marksheetName">No file chosen</span>
+                    </div>
+                </div>
+            </div>
+
+            <p id="dashboardMsg" class="dash-msg" role="alert"></p>
+
+            <button type="button" id="submitBtn" onclick="submitDashboard()" class="submit-btn">
+                <span id="submitBtnText">
+                    <i class="fa-solid fa-paper-plane"></i>&nbsp; Submit Application
+                </span>
+                <span id="submitSpinner" class="spinner hidden"></span>
+            </button>
+
+        </form>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

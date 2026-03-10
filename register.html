@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register – Internship Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ══════════════════════════════════
+           CUSTOM DATE PICKER
+        ══════════════════════════════════ */
+        .datepicker-wrapper {
+            position: relative;
+            margin-top: 8px;
+        }
+
+        .datepicker-input {
+            width: 100%;
+            padding: 16px 52px 16px 18px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 20px;
+            font-family: 'Segoe UI', sans-serif;
+            background: #fff;
+            cursor: pointer;
+            color: #333;
+            transition: border-color .2s;
+            user-select: none;
+        }
+
+        .datepicker-input:focus { outline: none; border-color: #449ce4; }
+        .datepicker-input.placeholder-style { color: #aaa; }
+
+        .datepicker-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 22px;
+            color: #555;
+            cursor: pointer;
+            pointer-events: none;
+        }
+
+        /* ── Popup ── */
+        .dp-popup {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            z-index: 999;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0,0,0,.18);
+            padding: 20px;
+            width: 380px;
+            animation: dpFadeIn .15s ease;
+        }
+
+        .dp-popup.open { display: block; }
+
+        @keyframes dpFadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Header: prev / month-year / next ── */
+        .dp-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .dp-nav-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #449ce4;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dp-nav-btn:hover { background: #eef5fd; }
+
+        .dp-month-year {
+            font-size: 20px;
+            font-weight: 700;
+            color: #222;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 8px;
+            transition: background .2s;
+        }
+
+        .dp-month-year:hover { background: #eef5fd; }
+
+        /* ── Weekday headers ── */
+        .dp-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            margin-bottom: 6px;
+        }
+
+        .dp-weekday {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 700;
+            color: #449ce4;
+            padding: 6px 0;
+        }
+
+        /* ── Days grid ── */
+        .dp-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .dp-day {
+            text-align: center;
+            font-size: 17px;
+            padding: 10px 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #333;
+            transition: background .15s, color .15s;
+            border: none;
+            background: none;
+            margin: 0;
+            width: 100%;
+        }
+
+        .dp-day:hover:not(.dp-empty):not(.dp-disabled) {
+            background: #dbeeff;
+            color: #1a56db;
+        }
+
+        .dp-day.dp-today {
+            font-weight: 700;
+            color: #449ce4;
+        }
+
+        .dp-day.dp-selected {
+            background: #449ce4;
+            color: #fff !important;
+            font-weight: 700;
+        }
+
+        .dp-day.dp-disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .dp-day.dp-empty {
+            cursor: default;
+        }
+
+        /* ── Month picker ── */
+        .dp-month-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .dp-month-btn {
+            padding: 12px 6px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #f4f6fb;
+            color: #333;
+            transition: background .15s;
+            margin: 0;
+            width: 100%;
+        }
+
+        .dp-month-btn:hover { background: #dbeeff; color: #1a56db; }
+        .dp-month-btn.dp-active { background: #449ce4; color: #fff; }
+
+        /* ── Year picker ── */
+        .dp-year-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .dp-year-btn {
+            padding: 10px 4px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #f4f6fb;
+            color: #333;
+            transition: background .15s;
+            margin: 0;
+            width: 100%;
+        }
+
+        .dp-year-btn:hover { background: #dbeeff; color: #1a56db; }
+        .dp-year-btn.dp-active { background: #449ce4; color: #fff; }
+
+        /* ── Footer ── */
+        .dp-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        .dp-clear-btn, .dp-today-btn {
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background .2s;
+            margin: 0;
+            width: auto;
+        }
+
+        .dp-clear-btn { background: #f0f0f0; color: #555; }
+        .dp-clear-btn:hover { background: #e0e0e0; }
+
+        .dp-today-btn { background: #449ce4; color: #fff; }
+        .dp-today-btn:hover { background: #1a7bcf; }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="images/logo.png" alt="logo">
+    </div>
+    <div class="overlay"></div>
+
+    <div class="card">
+        <h1>Register</h1>
+
+        <label for="name">Name</label>
+        <input id="name" type="text" placeholder="Enter full name" autocomplete="name">
+
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="Enter email address" autocomplete="email">
+
+        <label>Date of Birth</label>
+        <div class="datepicker-wrapper" id="dpWrapper">
+            <div class="datepicker-input placeholder-style" id="dpDisplay" onclick="dpToggle()">
+                Select date
+            </div>
+            <i class="fa-solid fa-calendar-days datepicker-icon" onclick="dpToggle()"></i>
+            <input type="hidden" id="dob">
+
+            <!-- Popup -->
+            <div class="dp-popup" id="dpPopup">
+                <div class="dp-header">
+                    <button type="button" class="dp-nav-btn" id="dpPrev">&#8249;</button>
+                    <span class="dp-month-year" id="dpMonthYear" onclick="dpToggleView()"></span>
+                    <button type="button" class="dp-nav-btn" id="dpNext">&#8250;</button>
+                </div>
+
+                <!-- Day view -->
+                <div id="dpDayView">
+                    <div class="dp-weekdays">
+                        <div class="dp-weekday">Su</div>
+                        <div class="dp-weekday">Mo</div>
+                        <div class="dp-weekday">Tu</div>
+                        <div class="dp-weekday">We</div>
+                        <div class="dp-weekday">Th</div>
+                        <div class="dp-weekday">Fr</div>
+                        <div class="dp-weekday">Sa</div>
+                    </div>
+                    <div class="dp-days" id="dpDays"></div>
+                </div>
+
+                <!-- Month view -->
+                <div id="dpMonthView" style="display:none;">
+                    <div class="dp-month-grid" id="dpMonthGrid"></div>
+                </div>
+
+                <!-- Year view -->
+                <div id="dpYearView" style="display:none;">
+                    <div class="dp-year-grid" id="dpYearGrid"></div>
+                </div>
+
+                <div class="dp-footer">
+                    <button type="button" class="dp-clear-btn" onclick="dpClear()">Clear</button>
+                    <button type="button" class="dp-today-btn" onclick="dpSelectToday()">Today</button>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" id="registerBtn" onclick="register()">
+            <span id="registerBtnText">REGISTER</span>
+            <span id="registerSpinner" class="spinner hidden"></span>
+        </button>
+        <p id="registerMsg" class="msg" role="alert"></p>
+
+        <div class="links">
+            <a href="login.html">← Back to Login</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      
+        const MONTHS = ["January","February","March","April","May","June",
+                        "July","August","September","October","November","December"];
+
+        let dpCurrentYear  = new Date().getFullYear();
+        let dpCurrentMonth = new Date().getMonth();
+        let dpSelectedDate = null;
+        let dpView         = "day"; // "day" | "month" | "year"
+
+        function dpToggle() {
+            const popup = document.getElementById("dpPopup");
+            if (popup.classList.contains("open")) {
+                popup.classList.remove("open");
+            } else {
+                dpView = "day";
+                dpRender();
+                popup.classList.add("open");
+            }
+        }
+
+        function dpToggleView() {
+            if (dpView === "day")   { dpView = "month"; }
+            else if (dpView === "month") { dpView = "year"; }
+            else                    { dpView = "day"; }
+            dpRender();
+        }
+
+        function dpRender() {
+            document.getElementById("dpDayView").style.display   = dpView === "day"   ? "" : "none";
+            document.getElementById("dpMonthView").style.display  = dpView === "month" ? "" : "none";
+            document.getElementById("dpYearView").style.display   = dpView === "year"  ? "" : "none";
+            document.getElementById("dpMonthYear").textContent    =
+                dpView === "year" ? `${dpCurrentYear}` :
+                dpView === "month" ? `${dpCurrentYear}` :
+                `${MONTHS[dpCurrentMonth]} ${dpCurrentYear}`;
+
+            if (dpView === "day")   dpRenderDays();
+            if (dpView === "month") dpRenderMonths();
+            if (dpView === "year")  dpRenderYears();
+        }
+
+        function dpRenderDays() {
+            const container = document.getElementById("dpDays");
+            container.innerHTML = "";
+            const today     = new Date();
+            const maxDate   = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const firstDay  = new Date(dpCurrentYear, dpCurrentMonth, 1).getDay();
+            const daysInMon = new Date(dpCurrentYear, dpCurrentMonth + 1, 0).getDate();
+
+            // Empty cells before first day
+            for (let i = 0; i < firstDay; i++) {
+                const el = document.createElement("button");
+                el.type = "button";
+                el.className = "dp-day dp-empty";
+                container.appendChild(el);
+            }
+
+            for (let d = 1; d <= daysInMon; d++) {
+                const el   = document.createElement("button");
+                el.type    = "button";
+                el.textContent = d;
+                const thisDate = new Date(dpCurrentYear, dpCurrentMonth, d);
+                let cls = "dp-day";
+
+                if (thisDate > maxDate) cls += " dp-disabled";
+                if (thisDate.toDateString() === today.toDateString()) cls += " dp-today";
+                if (dpSelectedDate && thisDate.toDateString() === dpSelectedDate.toDateString()) cls += " dp-selected";
+
+                el.className = cls;
+
+                if (thisDate <= maxDate) {
+                    el.onclick = () => dpSelectDay(d);
+                }
+                container.appendChild(el);
+            }
+        }
+
+        function dpRenderMonths() {
+            const grid = document.getElementById("dpMonthGrid");
+            grid.innerHTML = "";
+            MONTHS.forEach((m, i) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.textContent = m.slice(0, 3);
+                btn.className = "dp-month-btn" + (i === dpCurrentMonth ? " dp-active" : "");
+                btn.onclick = () => { dpCurrentMonth = i; dpView = "day"; dpRender(); };
+                grid.appendChild(btn);
+            });
+        }
+
+        function dpRenderYears() {
+            const grid = document.getElementById("dpYearGrid");
+            grid.innerHTML = "";
+            const endYear   = new Date().getFullYear();
+            const startYear = 1950;
+            for (let y = endYear; y >= startYear; y--) {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.textContent = y;
+                btn.className = "dp-year-btn" + (y === dpCurrentYear ? " dp-active" : "");
+                btn.onclick = () => { dpCurrentYear = y; dpView = "month"; dpRender(); };
+                grid.appendChild(btn);
+            }
+            // scroll selected year into view
+            setTimeout(() => {
+                const active = grid.querySelector(".dp-active");
+                if (active) active.scrollIntoView({ block: "center" });
+            }, 50);
+        }
+
+        function dpSelectDay(d) {
+            dpSelectedDate = new Date(dpCurrentYear, dpCurrentMonth, d);
+            const yyyy = dpSelectedDate.getFullYear();
+            const mm   = String(dpSelectedDate.getMonth() + 1).padStart(2, "0");
+            const dd   = String(dpSelectedDate.getDate()).padStart(2, "0");
+
+            document.getElementById("dob").value = `${yyyy}-${mm}-${dd}`;
+
+            const display = document.getElementById("dpDisplay");
+            display.textContent = `${dd}-${mm}-${yyyy}`;
+            display.classList.remove("placeholder-style");
+
+            document.getElementById("dpPopup").classList.remove("open");
+        }
+
+        function dpSelectToday() {
+            const t = new Date();
+            dpCurrentYear  = t.getFullYear();
+            dpCurrentMonth = t.getMonth();
+            dpSelectDay(t.getDate());
+        }
+
+        function dpClear() {
+            dpSelectedDate = null;
+            document.getElementById("dob").value = "";
+            const display = document.getElementById("dpDisplay");
+            display.textContent = "Select date";
+            display.classList.add("placeholder-style");
+            document.getElementById("dpPopup").classList.remove("open");
+        }
+
+        // Prev / Next navigation
+        document.getElementById("dpPrev").onclick = () => {
+            if (dpView === "day") {
+                dpCurrentMonth--;
+                if (dpCurrentMonth < 0) { dpCurrentMonth = 11; dpCurrentYear--; }
+            } else if (dpView === "month") {
+                dpCurrentYear--;
+            } else {
+                dpCurrentYear -= 12;
+            }
+            dpRender();
+        };
+
+        document.getElementById("dpNext").onclick = () => {
+            if (dpView === "day") {
+                dpCurrentMonth++;
+                if (dpCurrentMonth > 11) { dpCurrentMonth = 0; dpCurrentYear++; }
+            } else if (dpView === "month") {
+                dpCurrentYear++;
+            } else {
+                dpCurrentYear += 12;
+            }
+            dpRender();
+        };
+
+        // Close when clicking outside
+        document.addEventListener("click", function(e) {
+            const wrapper = document.getElementById("dpWrapper");
+            if (wrapper && !wrapper.contains(e.target)) {
+                document.getElementById("dpPopup").classList.remove("open");
+            }
+        });
+
+        // Init
+        dpRender();
+    </script>
+</body>
+</html>

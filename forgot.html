@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Credentials – Internship Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div class="logo">
+        <img src="images/logo.png" alt="logo">
+    </div>
+    <div class="overlay"></div>
+    <div class="card">
+        <h1>Forgot Credentials</h1>
+
+        <label for="forgotEmail">Registered Email</label>
+        <input id="forgotEmail" type="email" placeholder="Enter your registered email" autocomplete="email">
+
+        <button type="button" id="forgotBtn" onclick="forgotPassword()">
+            <span id="forgotBtnText">SEND EMAIL</span>
+            <span id="forgotSpinner" class="spinner hidden"></span>
+        </button>
+        <p id="forgotMsg" class="msg" role="alert"></p>
+
+        <div class="links">
+            <a href="login.html">← Back to Login</a>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
